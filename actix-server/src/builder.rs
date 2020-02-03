@@ -446,7 +446,7 @@ impl ServerBuilder {
 
     fn close_socks(&mut self) {
         println!("test");
-        let sockets_t = mem::replace(&mut self.sockets, Vec::new());
+        //let sockets_t = mem::replace(&mut self.sockets, Vec::new());
         // len = 0 before shutdown!?
         println!("{}", self.sockets.len());
         for socket_t in sockets_t {
