@@ -449,19 +449,19 @@ impl ServerBuilder {
         //let sockets_t = mem::replace(&mut self.sockets, Vec::new());
         // len = 0 before shutdown!?
         println!("{}", self.sockets.len());
-        for socket_t in sockets_t {
-            let socket = socket_t.2;
-            match socket {
-                StdListener::Tcp(listener) => {
-                    println!("shutting down socket...");
-                    let sock = socket2::Socket::from(listener);
-                    sock.set_nonblocking(true).unwrap();
-                    sock.shutdown(std::net::Shutdown::Both).unwrap();
-                },
-                #[cfg(all(unix))]
-                StdListener::Uds(_lis) => ()
-            }
-        }
+        // for socket_t in sockets_t {
+        //     let socket = socket_t.2;
+        //     match socket {
+        //         StdListener::Tcp(listener) => {
+        //             println!("shutting down socket...");
+        //             let sock = socket2::Socket::from(listener);
+        //             sock.set_nonblocking(true).unwrap();
+        //             sock.shutdown(std::net::Shutdown::Both).unwrap();
+        //         },
+        //         #[cfg(all(unix))]
+        //         StdListener::Uds(_lis) => ()
+        //     }
+        // }
     }
 }
 
