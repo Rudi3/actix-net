@@ -360,6 +360,8 @@ impl ServerBuilder {
                 self.accept.send(Command::Stop);
                 let notify = std::mem::replace(&mut self.notify, Vec::new());
 
+                self.close_socks();
+
                 // stop workers
                 if !self.workers.is_empty() && graceful {
                     spawn(
@@ -409,7 +411,6 @@ impl ServerBuilder {
                         let _ = tx.send(());
                     }
                 }
-                self.close_socks();
             }
             ServerCommand::WorkerFaulted(idx) => {
                 let mut found = false;
