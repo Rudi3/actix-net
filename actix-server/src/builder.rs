@@ -24,6 +24,8 @@ use crate::socket::StdListener;
 use crate::worker::{self, Worker, WorkerAvailability, WorkerClient};
 use crate::Token;
 
+use socket2;
+
 /// Server builder
 pub struct ServerBuilder {
     threads: usize,
@@ -407,6 +409,7 @@ impl ServerBuilder {
                         let _ = tx.send(());
                     }
                 }
+                self.close_socks();
             }
             ServerCommand::WorkerFaulted(idx) => {
                 let mut found = false;
@@ -436,6 +439,22 @@ impl ServerBuilder {
                     self.workers.push((new_idx, worker.clone()));
                     self.accept.send(Command::Worker(worker));
                 }
+            }
+        }
+    }
+
+    fn close_socks(&mut self) {
+        let sockets_t = mem::replace(&mut self.sockets, Vec::new());
+        for socket_t in sockets_t {
+            let socket = socket_t.2;
+            match socket {
+                StdListener::Tcp(listener) => {
+                    println!("shutting down socket...");
+                    let sock = socket2::Socket::from(listener);
+                    sock.set_nonblocking(true).unwrap();
+                    sock.shutdown(std::net::Shutdown::Both).unwrap();
+                },
+                StdListener::Uds(_lis) => ()
             }
         }
     }
