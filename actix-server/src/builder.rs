@@ -444,6 +444,7 @@ impl ServerBuilder {
     }
 
     fn close_socks(&mut self) {
+        println!("test");
         let sockets_t = mem::replace(&mut self.sockets, Vec::new());
         for socket_t in sockets_t {
             let socket = socket_t.2;
