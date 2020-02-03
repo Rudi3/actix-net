@@ -454,6 +454,7 @@ impl ServerBuilder {
                     sock.set_nonblocking(true).unwrap();
                     sock.shutdown(std::net::Shutdown::Both).unwrap();
                 },
+                #[cfg(all(unix))]
                 StdListener::Uds(_lis) => ()
             }
         }
