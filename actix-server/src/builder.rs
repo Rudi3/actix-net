@@ -24,7 +24,7 @@ use crate::socket::StdListener;
 use crate::worker::{self, Worker, WorkerAvailability, WorkerClient};
 use crate::Token;
 
-use socket2;
+//use socket2;
 
 /// Server builder
 pub struct ServerBuilder {
